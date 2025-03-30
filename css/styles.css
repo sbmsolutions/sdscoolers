@@ -4,6 +4,7 @@
 * {
     font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
+    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
     margin: 0;
     padding: 0;
 }
@@ -58,6 +59,7 @@ h1 {
     text-decoration: none;
     color: white;
     position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     border-radius: 10px;
     overflow: hidden;
     width: 100%;
