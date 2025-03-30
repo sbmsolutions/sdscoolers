@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.D.S. Coolers</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>S.D.S. Coolers</h1>
+        <a href="login.html">Login Page</a>
+        <div class="grid">
+            <a href="screens/add_customer.html" class="card">
+                <div class="card-image" style="background-image: url('assets/images/add_customer.jpg');">
+                    <div class="overlay"></div>
+                    <div class="card-text">
+                        <h2 style="font-size: 15px;">Add Customers</h2>
+                        <p style="font-size: 12px;">Manage customer details including GST and contact info.</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="screens/staff_management.html" class="card">
+                <div class="card-image" style="background-image: url('assets/images/staff.jpg');">
+                    <div class="overlay"></div>
+                    <div class="card-text">
+                        <h2 style="font-size: 15px;">Staff Management</h2>
+                        <p style="font-size: 12px;">Track attendance, advance payments, and payroll.</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="screens/make_invoice.html" class="card">
+                <div class="card-image" style="background-image: url('assets/images/invoice.jpg');">
+                    <div class="overlay"></div>
+                    <div class="card-text">
+                        <h2 style="font-size: 15px;">Make Invoice</h2>
+                        <p style="font-size: 12px;">Generate invoices with tax details (SGST, CGST, IGST).</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="screens/make_quotation.html" class="card">
+                <div class="card-image" style="background-image: url('assets/images/quotation.jpg');">
+                    <div class="overlay"></div>
+                    <div class="card-text">
+                        <h2 style="font-size: 15px;">Make Quotation</h2>
+                        <p style="font-size: 12px;">Prepare and share quotations for potential clients.</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="screens/manage_inventory.html" class="card">
+                <div class="card-image" style="background-image: url('assets/images/inventory.jpg');">
+                    <div class="overlay"></div>
+                    <div class="card-text">
+                        <h2 style="font-size: 15px;">Manage Inventory</h2>
+                        <p style="font-size: 12px;">Track stock, set low-stock alerts, and update quantities.</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="screens/sales_reports.html" class="card">
+                <div class="card-image" style="background-image: url('assets/images/report.jpg');">
+                    <div class="overlay"></div>
+                    <div class="card-text">
+                        <h2 style="font-size: 15px;">Sales Reports</h2>
+                        <p style="font-size: 12px;">View detailed reports of sales and revenue trends.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <script>
+        // Check if user is authenticated
+        if (localStorage.getItem("isAuthenticated") !== "true") {
+            window.location.href = "login.html"; // Redirect to login page
+        }
+    </script>
+    
+</body>
+</html>
