@@ -72,8 +72,8 @@
 
         if(enterID === adminID && enterPwd === adminPwd){
           localStorage.setItem("isAuthenticated","true");
-          // window.location.href = "/sdscoolers/screens/homepage.html";
-          window.location.href = "/screens/homepage.html";
+          window.location.href = "/sdscoolers/screens/homepage.html";
+          //window.location.href = "/screens/homepage.html";
         } else {
           document.getElementById("error-message").style.display = "block";
         }
