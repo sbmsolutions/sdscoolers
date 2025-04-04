@@ -1,48 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Customer</title>
-    <link rel="stylesheet" href="/sdscoolers/css/style_customer.css">
+    <title>Add Customer - S.D.S. Coolers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: hsl(200, 33%, 98%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .title-bar {
+            background: #1a5f7a;
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .back-button {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            background-color: #1a5f7a;
+            padding: 6px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        form {
+            padding: 30px;
+        }
+
+        .form-row {
+            margin-bottom: 30px;
+        }
+
+        .form-header {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .user-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .input-box {
+            margin-bottom: 15px;
+        }
+
+        .details {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #444;
+            font-size: 14px;
+        }
+
+        .required::after {
+            content: "*";
+            color: #e53e3e;
+            margin-left: 2px;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            height: 45px;
+            width: 100%;
+            outline: none;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 0 15px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            border-color: #1a5f7a;
+            box-shadow: 0 0 0 2px rgba(26, 95, 122, 0.2);
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .optional-label {
+            color: #718096;
+            font-size: 12px;
+            font-weight: normal;
+            margin-left: 5px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .button {
+            background: #1a5f7a;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .button:hover {
+            background: #12475c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 95, 122, 0.15);
+        }
+
+        .button.secondary {
+            background: transparent;
+            color: #1a5f7a;
+            border: 1px solid #1a5f7a;
+            margin-right: 10px;
+        }
+
+        .button.secondary:hover {
+            background: rgba(26, 95, 122, 0.05);
+        }
+
+        @media (max-width: 600px) {
+            .title {
+                font-size: 20px;
+            }
+
+            form {
+                padding: 20px;
+            }
+
+            .user-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
+
 <body>
-
     <div class="container">
-        <div class="title">Add Customer</div>
+        <div class="title-bar">
+            <div class="title">Add Customer</div>
+            <!-- <a href="index.html" class="back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5"></path>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Dashboard
+            </a> -->
+            <button id="backButton" class="back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5"></path>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back
+            </button>
+
+        </div>
+
         <form id="customerForm" action="#">
-            <div class="user-details">
-                <div class="input-box">
-                    <span class="details">Customer Name</span>
-                    <input type="text" id="customerName" name="customerName" placeholder="Enter full name" required>
-                </div>
+            <div class="form-row">
+                <h3 class="form-header">Customer Information</h3>
+                <div class="user-details">
+                    <div class="input-box">
+                        <span class="details required">Full Name</span>
+                        <input type="text" id="customerName" name="customerName"
+                            placeholder="Enter customer's full name" required>
+                    </div>
 
-                <div class="input-box">
-                    <span class="details">Customer Address</span>
-                    <input type="text" id="customerAddress" name="customerAddress" placeholder="Enter Customer Address" required>
-                </div>
+                    <div class="input-box">
+                        <span class="details required">Phone Number</span>
+                        <input type="text" id="customerPhone" name="customerPhone" placeholder="Enter phone number"
+                            required>
+                        <div class="input-hint">Format: 10-digit number without spaces</div>
+                    </div>
 
-                <div class="input-box">
-                    <span class="details">GST No.</span>
-                    <input type="text" id="customerGST" name="customerGST" placeholder="Enter GST No." required>
-                </div>
+                    <div class="input-box">
+                        <span class="details">Email <span class="optional-label">(optional)</span></span>
+                        <input type="email" id="customerEmail" name="customerEmail" placeholder="Enter email address">
+                    </div>
 
-                <div class="input-box">
-                    <span class="details">Customer Phone No.</span>
-                    <input type="text" id="customerPhone" name="customerPhone" placeholder="Enter Phone No." required>
-                </div>
-
-                <div class="input-box">
-                    <span class="details">Customer Email(if available)</span>
-                    <input type="text" id="customerEmail" name="customerEmail" placeholder="Enter Email" required>
+                    <div class="input-box">
+                        <span class="details required">GST Number</span>
+                        <input type="text" id="customerGST" name="customerGST" placeholder="Enter 15-digit GST number"
+                            required>
+                        <div class="input-hint">Format: 22AAAAA0000A1Z5</div>
+                    </div>
                 </div>
             </div>
-            <div class="button">
-                <input class="button" type="button" value="Add Customer">
+
+            <div class="form-row">
+                <h3 class="form-header">Address Details</h3>
+                <div class="user-details">
+                    <div class="input-box" style="grid-column: 1 / -1;">
+                        <span class="details required">Address</span>
+                        <input type="text" id="customerAddress" name="customerAddress" placeholder="Enter full address"
+                            required>
+                    </div>
+
+                    <div class="input-box">
+                        <span class="details">City</span>
+                        <input type="text" id="customerCity" name="customerCity" placeholder="Enter city">
+                    </div>
+
+                    <div class="input-box">
+                        <span class="details">State</span>
+                        <input type="text" id="customerState" name="customerState" placeholder="Enter state">
+                    </div>
+
+                    <div class="input-box">
+                        <span class="details">Pincode</span>
+                        <input type="text" id="customerPincode" name="customerPincode" placeholder="Enter pincode">
+                    </div>
+                </div>
             </div>
 
+            <div class="button-container">
+                <button type="button" class="button secondary">Cancel</button>
+                <button type="submit" class="button">Add Customer</button>
+            </div>
         </form>
     </div>
 
+    <script>
+        document.getElementById("backButton").addEventListener("click", function () {
+            window.history.back(); // Navigates to the previous page
+        });
+
+        document.getElementById("customerForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            // Here you would typically save the customer data
+            // For now, we'll just show a success message
+            alert("Customer added successfully!");
+
+            // And optionally clear the form
+            this.reset();
+        });
+    </script>
 </body>
+
 </html>

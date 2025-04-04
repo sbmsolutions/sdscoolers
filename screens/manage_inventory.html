@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.D.S. Coolers - Manage Inventory</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Advance Payment Management</h1>
+
+        <!-- Advance Payment Section -->
+        <div class="advance-section">
+            <h2>Advance Payment</h2>
+            <div class="advance-form">
+                <label for="staff1Advance">Staff Member 1:</label>
+                <input type="number" id="staff1Advance" placeholder="Enter Amount">
+                
+                <label for="staff2Advance">Staff Member 2:</label>
+                <input type="number" id="staff2Advance" placeholder="Enter Amount">
+                
+                <button onclick="updateSummary()">Update Payments</button>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="summary-section">
+            <h2>Payment Summary</h2>
+            <p><strong>Staff Member 1:</strong> <span id="staff1Summary">₹0</span></p>
+            <p><strong>Staff Member 2:</strong> <span id="staff2Summary">₹0</span></p>
+        </div>
+    </div>
+
+    <script src="/scripts/script_staff.js"></script>
+</body>
+</html>

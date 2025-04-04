@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment System</title>
+    <link rel="stylesheet" href="/css/demo.css">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js"></script>
+
+    <script type="module">
+        // Import Firebase Modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA2yvXdcSGMFzTdHLtLbdYSCtfG4XYmfZJ",
+            authDomain: "sdscoolers.firebaseapp.com",
+            projectId: "sdscoolers",
+            storageBucket: "sdscoolers.firebasestorage.app",
+            messagingSenderId: "532383388279",
+            appId: "1:532383388279:web:340b970c366ea6f7502c72",
+            measurementId: "G-0VPZ84T7JN"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("updatePaymentBtn").addEventListener("click", updatePayment);
+        });
+
+        // Ensure script runs after page loads
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("DOM fully loaded, initializing...");
+            populateMonthYear();
+            loadPayments();
+
+            // ✅ Add event listener to dropdown
+            document.getElementById("monthYear").addEventListener("change", loadPayments);
+        });
+
+        // Populate Month-Year Dropdown
+        function populateMonthYear() {
+            const monthYearSelect = document.getElementById("monthYear");
+
+            if (!monthYearSelect) {
+                console.error("Dropdown not found!");
+                return;
+            }
+
+            console.log("Populating month-year dropdown...");
+
+            const currentYear = new Date().getFullYear();
+            const currentMonth = new Date().getMonth() + 1;
+            const months = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+            monthYearSelect.innerHTML = ""; // Clear existing options
+
+            for (let year = currentYear; year >= currentYear - 1; year--) {
+                for (let month = 0; month < 12; month++) {
+                    if (year === currentYear && month + 1 > currentMonth) {
+                        continue; // Skip future months of current year
+                    }
+                    const value = `${year}-${String(month + 1).padStart(2, '0')}`;
+                    const text = `${months[month]} ${year}`;
+                    const option = new Option(text, value);
+
+                    // ✅ Select the current month by default
+                    if (year === currentYear && month + 1 === currentMonth) {
+                        option.selected = true;
+                    }
+
+                    monthYearSelect.add(option);
+                }
+            }
+
+            console.log("Dropdown populated successfully.");
+        }
+
+        // Add event listener if dropdown exists
+        const monthYearDropdown = document.getElementById("monthYear");
+        if (monthYearDropdown) {
+            monthYearDropdown.addEventListener("change", loadPayments);
+        }
+
+        // Fetch payments from Firestore
+        // async function loadPayments() {
+        //     const selectedMonthYear = document.getElementById("monthYear").value;
+        //     const docRef = doc(db, "staff_payments", selectedMonthYear);
+        //     const docSnap = await getDoc(docRef);
+
+        //     console.log(`Loading data for: ${selectedMonthYear}`);
+
+        //     if (docSnap.exists()) {
+        //         const data = docSnap.data();
+        //         document.getElementById("talibAmount").value = data.talib || 0;
+        //         document.getElementById("harshAmount").value = data.harsh || 0;
+        //         updatePaymentDetails(selectedMonthYear, data.talib, data.harsh);
+        //     } else {
+        //         document.getElementById("talibAmount").value = null;
+        //         document.getElementById("harshAmount").value = null;
+        //         updatePaymentDetails(selectedMonthYear, null, null);
+        //     }
+        // }
+
+        window.updateIndividualPayment = async function (staffName) {
+
+            const selectedMonthYear = document.getElementById("monthYear").value;
+            const amountInput = document.getElementById(`${staffName}Amount`);
+            if (!amountInput) {
+                console.error(`Input field for ${staffName} not found!`);
+                return;
+            }
+
+            const amountValue = amountInput.value.trim(); // Trim spaces
+            if (!amountValue) {
+                alert("Enter a valid amount!");
+                return;
+            }
+
+            const amount = parseInt(amountValue);
+            if (isNaN(amount) || amount <= 0) {
+                alert("Enter a valid amount!");
+                return;
+            }
+
+            console.log("Raw Input:", amountInput.value); // Debugging step
+            console.log("Parsed Amount:", amount); // Debugging step
+
+
+
+            try {
+                const docRef = doc(db, "staff_payments", selectedMonthYear);
+                const docSnap = await getDoc(docRef);
+
+                let existingData = {};
+                let newTransactions = [];
+
+                if (docSnap.exists()) {
+                    existingData = docSnap.data();
+                    newTransactions = existingData.transactions || [];
+                }
+
+                // Add new transaction with timestamp
+                const newTransaction = {
+                    staff: staffName,
+                    amount: amount,
+                    timestamp: new Date().toLocaleString() // Store human-readable date
+                };
+
+                newTransactions.push(newTransaction);
+
+                // Update only the respective staff's amount and transactions list
+                await setDoc(docRef, {
+                    ...existingData,
+                    [staffName]: (existingData[staffName] || 0) + amount,
+                    transactions: newTransactions
+                });
+
+                alert(`${staffName} payment updated successfully!`);
+                amountInput.value = ""; // Clear input after update
+                loadPayments(); // Refresh data
+            } catch (error) {
+                console.error("Error updating payment:", error);
+                alert("Failed to update payment.");
+            }
+        };
+
+        // Fetch payments and display transaction history
+        async function loadPayments() {
+            const selectedMonthYear = document.getElementById("monthYear").value;
+            const docRef = doc(db, "staff_payments", selectedMonthYear);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                document.getElementById("talibAmount").value = "";
+                document.getElementById("harshAmount").value = "";
+
+                updateTransactionHistory(data.transactions || []);
+            } else {
+                updateTransactionHistory([]);
+            }
+        }
+
+        // Display transaction history in a table
+        function updateTransactionHistory(transactions) {
+            const historyContainer = document.getElementById("transactionHistory");
+            let html = `<div class="transaction-table">
+                <table class="payment-table">
+                    <thead>
+                        <tr>
+                            <th class="staff-column">Staff Name</th>
+                            <th class="amount-column">Amount (₹)</th>
+                            <th class="date-column">Date & Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+            if (transactions.length === 0) {
+                html += `<tr class="no-data-row"><td colspan="3">No transactions found.</td></tr>`;
+            } else {
+                transactions.forEach((t) => {
+                    html += `<tr>
+                        <td class="staff-column">${t.staff}</td>
+                        <td class="amount-column">₹${t.amount}</td>
+                        <td class="date-column">${t.timestamp}</td>
+                     </tr>`;
+                });
+            }
+
+            html += `</tbody></table></div>`;
+            historyContainer.innerHTML = html;
+        }
+
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Payment System</h1>
+            <p>Enter payment details below</p>
+        </div>
+
+        <div class="payment-card">
+            <!-- Month/Year Selection -->
+            <div class="month-selection">
+                <div class="month-label">Payment Period</div>
+                <div class="month-row">
+                    <div class="input-container select-container">
+                        <select id="monthYear" class="month-select">
+                            <!-- Options will be populated via JavaScript -->
+                        </select>
+                        <label for="monthYear">Select Month & Year</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="staff-payment">
+                <div class="staff-name">Talib</div>
+                <div class="payment-row">
+                    <div class="input-container">
+                        <input type="number" id="talibAmount" placeholder=" ">
+                        <label for="talib-amount">Enter amount</label>
+                    </div>
+                    <button class="payment-button" onclick="updateIndividualPayment('talib')">
+                        Add Payment
+                    </button>
+                </div>
+            </div>
+
+            <div class="staff-payment">
+                <div class="staff-name">Harsh</div>
+                <div class="payment-row">
+                    <div class="input-container">
+                        <input type="number" id="harshAmount" placeholder=" ">
+                        <label for="harsh-amount">Enter payment</label>
+                    </div>
+                    <button class="payment-button" onclick="updateIndividualPayment('harsh')">
+                        Add Payment
+                    </button>
+                </div>
+            </div>
+            <!-- Transaction History -->
+            <div class="transaction-section">
+                <h2 class="section-title">Transaction History</h2>
+                <p class="section-description">Select a month to view transactions.</p>
+                <div class="transaction-list" id="transactionHistory">
+                    <div class="no-transactions">No transactions to display for the selected period.</div>
+                </div>
+            </div>
+
+            <!-- Transaction History -->
+            <div class="transaction-section">
+                <h2 class="section-title">Transaction History</h2>
+                <p class="section-description">Select a month to view transactions.</p>
+                <div class="transaction-table" id="transactionHistory">
+                    <table class="payment-table">
+                        <thead>
+                            <tr>
+                                <th>Staff Name</th>
+                                <th>Amount</th>
+                                <th>Date & Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="no-data-row">
+                                <td colspan="3">No transactions to display for the selected period.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,387 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+    background: linear-gradient(to bottom right, #ebf1ff, #e2e8fd);
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Header styles */
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    color: #303c7a;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.header p {
+    color: #666;
+}
+
+/* Payment card styles */
+.payment-card {
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+/* Month Selection Styles */
+.month-selection {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.month-label {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.75rem;
+}
+
+.month-row {
+    display: flex;
+    align-items: flex-start;
+}
+
+.select-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+}
+
+.month-select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: white;
+    appearance: none; /* Removes default arrow in some browsers */
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.month-select:focus {
+    outline: none;
+    border-color: #4a6cf7;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.15);
+}
+
+/* Add custom dropdown arrow */
+.select-container::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #777;
+    pointer-events: none;
+}
+
+.select-container label {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    background-color: white;
+    padding: 0 4px;
+    font-size: 0.875rem;
+    color: #777;
+    pointer-events: none;
+    transition: all 0.2s ease-out;
+}
+
+.select-container .month-select:focus + label,
+.select-container .month-select:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 0.75rem;
+    color: #4a6cf7;
+}
+
+/* Staff payment section styles */
+.staff-payment {
+    margin-bottom: 2rem;
+}
+
+.staff-payment:last-child {
+    margin-bottom: 0;
+}
+
+.staff-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.75rem;
+    text-transform: capitalize;
+}
+
+.payment-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+/* Input container styles */
+.input-container {
+    position: relative;
+    flex-grow: 1;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 8px 8px;
+    border: 2px solid #93e6f5;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.input-container input:focus {
+    outline: none;
+    border-color: #4a6cf7;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.15);
+}
+
+.input-container label {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    background-color: white;
+    padding: 0 4px;
+    font-size: 0.875rem;
+    color: #777;
+    pointer-events: none;
+    transition: all 0.2s ease-out;
+}
+
+.input-container input:focus + label,
+.input-container input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 0.75rem;
+    color: #4a6cf7;
+}
+
+/* Button styles */
+.payment-button {
+    background: linear-gradient(to right, #4a6cf7, #5a7cf9);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(74, 108, 247, 0.2);
+    white-space: nowrap;
+}
+
+.payment-button:hover {
+    background: linear-gradient(to right, #3a5be6, #4a6cf7);
+    box-shadow: 0 6px 16px rgba(74, 108, 247, 0.3);
+    transform: translateY(-1px);
+}
+
+.payment-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(74, 108, 247, 0.2);
+}
+
+/* Transaction History styles */
+.transaction-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eaeaea;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.75rem;
+}
+
+.section-description {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.transaction-list {
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.no-transactions {
+    padding: 1.5rem;
+    text-align: center;
+    color: #777;
+    background-color: #f8f8f8;
+}
+
+.transaction-item {
+    display: flex;
+    padding: 1rem;
+    border-bottom: 1px solid #eaeaea;
+    background-color: white;
+    transition: background-color 0.2s;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-item:hover {
+    background-color: #f9f9ff;
+}
+
+.transaction-name {
+    flex: 1;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.transaction-amount {
+    flex: 1;
+    text-align: center;
+    font-weight: 600;
+    color: #4a6cf7;
+}
+
+.transaction-date {
+    flex: 1;
+    text-align: right;
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* Table styles */
+.transaction-table {
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.payment-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.payment-table th {
+    background-color: #f8f9fe;
+    color: #555;
+    font-weight: 600;
+    text-align: left;
+    padding: 16px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.payment-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.payment-table tr:last-child td {
+    border-bottom: none;
+}
+
+.payment-table tr:hover {
+    background-color: #f9f9ff;
+}
+
+.no-data-row td {
+    text-align: center;
+    color: #777;
+    padding: 24px 16px;
+    background-color: #f8f8f8;
+}
+
+.staff-column {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.amount-column {
+    font-weight: 600;
+    color: #4a6cf7;
+    font-size: 12px;
+}
+
+.date-column {
+    color: black;
+    font-size: 12px;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    .payment-row {
+        flex-direction: column;
+    }
+    
+    .payment-button {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+    
+    .payment-table th, 
+    .payment-table td {
+        padding: 12px 8px;    
+        font-size: 12px;
+    }
+    
+    .staff-column {
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: capitalize;
+    }
+    
+    .amount-column {
+        font-weight: 600;
+        color: #4a6cf7;
+        font-size: 12px;
+    }
+    
+    .date-column {
+        color: black;
+        font-size: 12px;
+    }
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    .payment-row {
+        flex-direction: column;
+    }
+    
+    .payment-button {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}
