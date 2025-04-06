@@ -1,11 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A4 Quotation Generator</title>
+  <link rel="stylesheet" href="/sdscoolers/css/style_quotation.css">
 </head>
 <body>
+  <div class="container">
+    <h1 class="print-hidden">A4 Quotation Generator</h1>
     
+    <!-- Quotation Form -->
+    <div id="quotationForm" class="print-hidden">
+      <div class="form-container">
+        <div class="form-section">
+          <h2>Customer Details</h2>
+          <div class="form-group">
+            <label for="customerName">Customer Name*</label>
+            <input type="text" id="customerName" required>
+          </div>
+          <div class="form-group">
+            <label for="customerAddress">Address</label>
+            <textarea id="customerAddress" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="customerState">State</label>
+            <input type="text" id="customerState">
+          </div>
+          <div class="form-group">
+            <label for="customerPhone">Phone Number</label>
+            <input type="text" id="customerPhone">
+          </div>
+          <div class="form-group">
+            <label for="customerPan">PAN Number</label>
+            <input type="text" id="customerPan">
+          </div>
+          <div class="form-group">
+            <label for="customerGst">GST Number</label>
+            <input type="text" id="customerGst">
+          </div>
+        </div>
+        
+        <div class="form-section">
+          <h2>Quotation Details</h2>
+          <div class="form-group">
+            <label for="quotationNumber">Quotation Number</label>
+            <input type="text" id="quotationNumber" readonly>
+          </div>
+          <div class="form-group">
+            <label for="quotationDate">Quotation Date</label>
+            <input type="date" id="quotationDate">
+          </div>
+          <div class="form-group">
+            <label for="validUntilDate">Valid Until</label>
+            <input type="date" id="validUntilDate">
+          </div>
+        </div>
+      </div>
+
+      <h2>Items</h2>
+      <div class="table-responsive">
+        <table id="itemsTable">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Quantity</th>
+              <th>Rate</th>
+              <th>Total</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="itemsTableBody">
+            <!-- Items will be added here via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <button id="addItemBtn" class="btn-add">+ Add Item</button>
+
+      <div class="form-container">
+        <div class="form-section">
+          <h2>Tax & Discount</h2>
+          <div class="form-group">
+            <label for="cgst">CGST (%)</label>
+            <input type="number" id="cgst" min="0" max="100" step="0.01" value="0">
+          </div>
+          <div class="form-group">
+            <label for="sgst">SGST (%)</label>
+            <input type="number" id="sgst" min="0" max="100" step="0.01" value="0">
+          </div>
+          <div class="form-group">
+            <label for="igst">IGST (%)</label>
+            <input type="number" id="igst" min="0" max="100" step="0.01" value="0">
+          </div>
+          <div class="form-group">
+            <label for="discount">Discount (%)</label>
+            <input type="number" id="discount" min="0" max="100" step="0.01" value="0">
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Summary</h2>
+          <div class="summary-box">
+            <div class="summary-row">
+              <span>Subtotal:</span>
+              <span id="subtotal">₹0.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Tax:</span>
+              <span id="taxAmount">₹0.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Discount:</span>
+              <span id="discountAmount">₹0.00</span>
+            </div>
+            <div class="summary-row total">
+              <span>Grand Total:</span>
+              <span id="grandTotal">₹0.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Additional Notes</h2>
+        <div class="form-group">
+          <label for="terms">Terms & Conditions</label>
+          <textarea id="terms" rows="2">1. This quotation is valid for 30 days from the date of issue. &NewLine;2. 50% advance payment required to confirm the order.</textarea>
+        </div>
+        <div class="form-group">
+          <label for="notes">Custom Notes</label>
+          <textarea id="notes" rows="2">Thank you for your interest in our services!</textarea>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button id="generateQuotationBtn" class="btn-primary">Generate Quotation</button>
+      </div>
+    </div>
+
+    <!-- Quotation Preview -->
+    <div id="quotationPreview" class="a4-page" style="display: none;">
+      <div class="preview-actions print-hidden">
+        <button id="editQuotationBtn" class="btn-secondary">Edit</button>
+        <button id="printQuotationBtn" class="btn-primary">Print Quotation</button>
+      </div>
+      
+      <!-- Quotation Header -->
+      <div class="invoice-header">
+        <div class="header-content">
+          <div class="invoice-title">
+            <h1>QUOTATION</h1>
+            <div class="invoice-details">
+              <div><strong>Quotation #:</strong> <span id="previewQuotationNumber"></span></div>
+              <div><strong>Date:</strong> <span id="previewQuotationDate"></span></div>
+              <div><strong>Valid Until:</strong> <span id="previewValidUntilDate"></span></div>
+            </div>
+          </div>
+          <div class="company-details">
+            <div class="company-name">S.D.S. Coolers</div>
+            <div class="company-address">
+              <div>150, Metro Compound, Near</div>
+              <div>Bhiwandi Weigh Bridge, Bhiwandi</div>
+              <div>shrikanthchippa@gmail.com</div>
+              <div>+91 8888556665</div>
+              <div>GST: 12ABCDE1234F1Z5</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customer Details -->
+      <div class="customer-details">
+        <h2>Quoted To:</h2>
+        <div class="customer-info">
+          <div class="customer-name" id="previewCustomerName"></div>
+          <div id="previewCustomerAddress"></div>
+          <div id="previewCustomerState"></div>
+          <div id="previewCustomerPhone"></div>
+          <div id="previewCustomerPan"></div>
+          <div id="previewCustomerGst"></div>
+        </div>
+      </div>
+
+      <!-- Items Table -->
+      <div class="invoice-items">
+        <table>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Qty</th>
+              <th>Rate</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody id="previewItemsTable">
+            <!-- Items will be added here via JavaScript -->
+          </tbody>
+        </table>
+
+        <!-- Summary -->
+        <div class="invoice-summary">
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span id="previewSubtotal"></span>
+          </div>
+          <div id="previewCgstRow" class="summary-row" style="display: none;">
+            <span id="previewCgstLabel">CGST (0%):</span>
+            <span id="previewCgstAmount"></span>
+          </div>
+          <div id="previewSgstRow" class="summary-row" style="display: none;">
+            <span id="previewSgstLabel">SGST (0%):</span>
+            <span id="previewSgstAmount"></span>
+          </div>
+          <div id="previewIgstRow" class="summary-row" style="display: none;">
+            <span id="previewIgstLabel">IGST (0%):</span>
+            <span id="previewIgstAmount"></span>
+          </div>
+          <div id="previewDiscountRow" class="summary-row" style="display: none;">
+            <span id="previewDiscountLabel">Discount (0%):</span>
+            <span id="previewDiscountAmount"></span>
+          </div>
+          <div class="summary-row total">
+            <span>Grand Total:</span>
+            <span id="previewGrandTotal"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terms and Signature -->
+      <div class="invoice-footer">
+        <div class="terms">
+          <h3>Terms & Conditions:</h3>
+          <p id="previewTerms"></p>
+        </div>
+        
+        <div class="footer-bottom">
+          <div class="notes">
+            <p id="previewNotes"></p>
+          </div>
+          <div class="signature">
+            <div class="signature-line">
+              Authorized Signature
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/sdscoolers/scripts/script_quotation.js"></script>
 </body>
 </html>
