@@ -3,34 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S.D.S. Coolers - Manage Inventory</title>
+    <title>Inventory Management - S.D.S. Coolers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/css/style_inventory.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Advance Payment Management</h1>
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
 
-        <!-- Advance Payment Section -->
-        <div class="advance-section">
-            <h2>Advance Payment</h2>
-            <div class="advance-form">
-                <label for="staff1Advance">Staff Member 1:</label>
-                <input type="number" id="staff1Advance" placeholder="Enter Amount">
-                
-                <label for="staff2Advance">Staff Member 2:</label>
-                <input type="number" id="staff2Advance" placeholder="Enter Amount">
-                
-                <button onclick="updateSummary()">Update Payments</button>
+    <div class="layout">
+        <!-- Main Content -->
+        <div class="main-content" id="mainContent">
+            <div class="page-header">
+                <h1 class="page-title">Inventory Management</h1>
             </div>
-        </div>
+            <div class="title-bar">
+                <div class="title">Stock Incoming</div>
+                <!-- <a href="index.html" class="back-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5"></path>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Dashboard
+                </a> -->
+                <button id="backButton" class="back-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5"></path>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back
+                </button>
+    
+            </div>
 
-        <!-- Summary Section -->
-        <div class="summary-section">
-            <h2>Payment Summary</h2>
-            <p><strong>Staff Member 1:</strong> <span id="staff1Summary">₹0</span></p>
-            <p><strong>Staff Member 2:</strong> <span id="staff2Summary">₹0</span></p>
+            <!-- Stock In -->
+            <div class="card">
+                <div class="card-body">
+                    <form id="stockInForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="productNameIn" class="form-label">Product Name</label>
+                                <input type="text" id="productNameIn" class="form-control" placeholder="Select or enter product name">
+                            </div>
+                            <div class="form-group">
+                                <label for="quantityIn" class="form-label">Quantity</label>
+                                <input type="number" id="quantityIn" class="form-control" placeholder="Enter quantity">
+                            </div>
+                            <div class="form-group">
+                                <label for="dateIn" class="form-label">Date Received</label>
+                                <input type="date" id="dateIn" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="supplierIn" class="form-label">Supplier</label>
+                                <input type="text" id="supplierIn" class="form-control" placeholder="Enter supplier name">
+                            </div>
+                            <div class="form-group">
+                                <label for="priceIn" class="form-label">Price per Unit (₹)</label>
+                                <input type="number" id="priceIn" class="form-control" placeholder="Enter price">
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button type="submit" class="btn btn-block">Add Stock</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Stock Out -->
+            <div class="card">
+                <div class="card-header">
+                    Stocks Outgoing
+                </div>
+                <div class="card-body">
+                    <form id="stockOutForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="productNameOut" class="form-label">Product Name</label>
+                                <input type="text" id="productNameOut" class="form-control" placeholder="Select or enter product name">
+                            </div>
+                            <div class="form-group">
+                                <label for="quantityOut" class="form-label">Quantity</label>
+                                <input type="number" id="quantityOut" class="form-control" placeholder="Enter quantity">
+                            </div>
+                            <div class="form-group">
+                                <label for="dateOut" class="form-label">Date Dispatched</label>
+                                <input type="date" id="dateOut" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerOut" class="form-label">Customer</label>
+                                <input type="text" id="customerOut" class="form-control" placeholder="Enter customer name">
+                            </div>
+                            <div class="form-group">
+                                <label for="invoiceOut" class="form-label">Invoice No.</label>
+                                <input type="text" id="invoiceOut" class="form-control" placeholder="Enter invoice number">
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button type="submit" class="btn btn-block">Record Outgoing</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Current Stock Levels -->
+            <div class="card">
+                <div class="card-header">
+                    Stocks Available
+                </div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table class="inventory-table">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price (₹)</th>
+                                    <th>Total Value (₹)</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Air Cooler - Small</td>
+                                    <td>Coolers</td>
+                                    <td>45</td>
+                                    <td>5,500</td>
+                                    <td>247,500</td>
+                                    <td><span class="status-indicator status-in-stock"></span> In Stock</td>
+                                </tr>
+                                <tr>
+                                    <td>Air Cooler - Medium</td>
+                                    <td>Coolers</td>
+                                    <td>32</td>
+                                    <td>7,800</td>
+                                    <td>249,600</td>
+                                    <td><span class="status-indicator status-in-stock"></span> In Stock</td>
+                                </tr>
+                                <tr>
+                                    <td>Air Cooler - Large</td>
+                                    <td>Coolers</td>
+                                    <td>18</td>
+                                    <td>12,500</td>
+                                    <td>225,000</td>
+                                    <td><span class="status-indicator status-in-stock"></span> In Stock</td>
+                                </tr>
+                                <tr>
+                                    <td>Cooling Pad - Type A</td>
+                                    <td>Spare Parts</td>
+                                    <td>120</td>
+                                    <td>350</td>
+                                    <td>42,000</td>
+                                    <td><span class="status-indicator status-in-stock"></span> In Stock</td>
+                                </tr>
+                                <tr>
+                                    <td>Cooling Pad - Type B</td>
+                                    <td>Spare Parts</td>
+                                    <td>85</td>
+                                    <td>450</td>
+                                    <td>38,250</td>
+                                    <td><span class="status-indicator status-in-stock"></span> In Stock</td>
+                                </tr>
+                                <tr>
+                                    <td>Motor - 1/2 HP</td>
+                                    <td>Spare Parts</td>
+                                    <td>5</td>
+                                    <td>1,200</td>
+                                    <td>6,000</td>
+                                    <td><span class="status-indicator status-low-stock"></span> Low Stock</td>
+                                </tr>
+                                <tr>
+                                    <td>Water Pump - Small</td>
+                                    <td>Spare Parts</td>
+                                    <td>0</td>
+                                    <td>800</td>
+                                    <td>0</td>
+                                    <td><span class="status-indicator status-out-of-stock"></span> Out of Stock</td>
+                                </tr>
+                                <tr>
+                                    <td>Fan Blade - 16 inch</td>
+                                    <td>Spare Parts</td>
+                                    <td>28</td>
+                                    <td>650</td>
+                                    <td>18,200</td>
+                                    <td><span class="status-indicator status-in-stock"></span> In Stock</td>
+                                </tr>
+                                <tr>
+                                    <td>Fan Blade - 18 inch</td>
+                                    <td>Spare Parts</td>
+                                    <td>15</td>
+                                    <td>750</td>
+                                    <td>11,250</td>
+                                    <td><span class="status-indicator status-in-stock"></span> In Stock</td>
+                                </tr>
+                                <tr>
+                                    <td>Water Tank - 25L</td>
+                                    <td>Spare Parts</td>
+                                    <td>4</td>
+                                    <td>1,500</td>
+                                    <td>6,000</td>
+                                    <td><span class="status-indicator status-low-stock"></span> Low Stock</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script src="/scripts/script_staff.js"></script>
+    <script>
+        document.getElementById("backButton").addEventListener("click", function () {
+            window.history.back(); // Navigates to the previous page
+        });
+        // Sidebar Toggle Functionality
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('sidebar-active');
+        });
+
+        // Responsive layout adjustment
+        function handleResize() {
+            if (window.innerWidth > 992) {
+                sidebar.classList.add('active');
+                mainContent.classList.remove('sidebar-active');
+            } else {
+                sidebar.classList.remove('active');
+            }
+        }
+
+        // Initial call and event listener
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        // Form submissions (for demo - would connect to backend in real application)
+        document.getElementById('stockInForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Stock added successfully!');
+            this.reset();
+        });
+
+        document.getElementById('stockOutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Stock dispatch recorded successfully!');
+            this.reset();
+        });
+    </script>
 </body>
 </html>
